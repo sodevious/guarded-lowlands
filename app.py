@@ -1,15 +1,21 @@
 from flask import Flask, jsonify, send_file, request
 from flask.ext.restful import Api, Resource
 from flask.ext.sqlalchemy import SQLAlchemy
+import os 
+
 
 app = Flask(__name__)
 app.debug=True
 api = Api(app)
 
 
+if DEBUG:
+	app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/nicoledominguez/sites/flask-ember-todo/todos.db'
+
+else:
+	app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 
 class TodoModel(db.Model):
