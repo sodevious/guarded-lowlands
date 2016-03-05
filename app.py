@@ -5,7 +5,11 @@ from flask.ext.sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.debug=True
 api = Api(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/todos.db'
+
+
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/nicoledominguez/sites/flask-ember-todo/todos.db'
 db = SQLAlchemy(app)
 
 class TodoModel(db.Model):
