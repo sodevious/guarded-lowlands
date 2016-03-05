@@ -9,7 +9,7 @@ api = Api(app)
 
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/nicoledominguez/sites/flask-ember-todo/todos.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 
 class TodoModel(db.Model):
