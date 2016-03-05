@@ -8,9 +8,24 @@ app = Flask(__name__)
 app.debug=True
 api = Api(app)
 
+DEBUG = False
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/nicoledominguez/sites/flask-ember-todo/todos.db'
-#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+
+try:
+    from settings import *
+
+except ImportError:
+    pass
+
+
+
+
+if DEBUG:
+	app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/nicoledominguez/sites/flask-ember-todo/todos.db'
+
+else:
+	app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+
 
 
 db = SQLAlchemy(app)
