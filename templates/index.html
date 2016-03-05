@@ -1,72 +1,106 @@
 <!doctype html>
 <html lang="en" data-framework="emberjs">
-  <head>
+<head>
     <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <script type="text/x-handlebars" data-template-name="todo-list">
-      {{#if length}}
-        <section id="main">
-          {{#if canToggle}}
-            {{input type="checkbox" id="toggle-all" checked=allTodos.allAreDone}}
-          {{/if}}
-          <ul id="todo-list">
+    <title>domains</title>
+    <link href="/static/css/ratchet.min.css" media="all" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/ratchet-theme-ios.min.css" media="all" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/application.css" media="all" rel="stylesheet" type="text/css"/>
+
+    <script>
+        (function (d) {
+            var config = {
+                        kitId: 'zmq1doi',
+                        scriptTimeout: 3000,
+                        async: true
+                    },
+                    h = d.documentElement, t = setTimeout(function () {
+                        h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive";
+                    }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a;
+            h.className += " wf-loading";
+            tk.src = 'https://use.typekit.net/' + config.kitId + '.js';
+            tk.async = true;
+            tk.onload = tk.onreadystatechange = function () {
+                a = this.readyState;
+                if (f || a && a != "complete" && a != "loaded")return;
+                f = true;
+                clearTimeout(t);
+                try {
+                    Typekit.load(config)
+                } catch (e) {
+                }
+            };
+            s.parentNode.insertBefore(tk, s)
+        })(document);
+    </script>
+</head>
+<body>
+
+<header class="bar bar-nav">
+    <h1 class="title">domainlist</h1>
+</header>
+
+<script type="text/x-handlebars" data-template-name="todo-list">
+    {{#if length}}
+        <ul class="table-view" id="todo-list">
             {{#each}}
-              <li {{bind-attr class="isCompleted:completed isEditing:editing"}}>
-                {{#if isEditing}}
-                  {{todo-input type="text" class="edit" value=bufferedTitle focus-out="doneEditing" insert-newline="doneEditing" escape-press="cancelEditing"}}
-                {{else}}
-                  {{input type="checkbox" class="toggle" checked=isCompleted}}
-                  <label {{action "editTodo" on="doubleClick"}}>{{title}}</label>
-                  <button {{action "removeTodo"}} class="destroy"></button>
-                {{/if}}
+                <!-- <li {{ bind-attr class="isCompleted:completed isEditing:editing"}}> -->
+                <li class="table-view-cell">
+                    {{#if isEditing}}
+                        {{ todo-input type="text" class="edit" value=bufferedTitle focus-out="doneEditing" insert-newline="doneEditing" escape-press="cancelEditing"}}
+                    {{ else }}
+
+                        <!-- {{ input type="checkbox" class="toggle" checked=isCompleted}} -->
+
+                        {{ title }}
+
+                        <a class="btn" href="#" {{ action "editTodo" on="click"}}>Edit</a>
+
+                        <!-- <button {{ action "removeTodo"}} class="destroy"></button> -->
+                    {{/if}}
                 </li>
             {{/each}}
-          </ul>
-        </section>
-      {{/if}}
-    </script>
-    <script type="text/x-handlebars" data-template-name="todos">
-      <section id="todoapp">
-        <header id="header">
-          <h1>todos</h1>
-          {{todo-input id="new-todo" type="text" value=newTitle action="createTodo" placeholder="What needs to be done?"}}
-        </header>
-          {{outlet}}
-          {{#if length}}
-            <footer id="footer">
-              <span id="todo-count"><strong>{{remaining.length}}</strong> {{pluralize 'item' remaining.length}} left</span>
-              <ul id="filters">
-                <li>
-                  {{#link-to "todos.index" activeClass="selected"}}All{{/link-to}}
-                </li>
-                <li>
-                  {{#link-to "todos.active" activeClass="selected"}}Active{{/link-to}}
-                </li>
-                <li>
-                  {{#link-to "todos.completed" activeClass="selected"}}Completed{{/link-to}}
-                </li>
-              </ul>
-              {{#if completed.length}}
-                <button id="clear-completed" {{action "clearCompleted"}}>Clear completed</button>
-              {{/if}}
-            </footer>
-          {{/if}}
-      </section>
-    </script>
+        </ul>
+    {{/if}}
+</script>
 
-    <script src="/static/js/vendor/jquery/dist/jquery.js"></script>
-    <script src="/static/js/vendor/handlebars/dist/handlebars.js"></script>
-    <script src="/static/js/vendor/components-ember/ember.js"></script>
-    <script src="/static/js/vendor/ember-data/ember-data.js"></script>
-    <script src="/static/js/app.js"></script>
-    <script src="/static/js/router.js"></script>
-    <script src="/static/js/models/todo.js"></script>
-    <script src="/static/js/controllers/todos_controller.js"></script>
-    <script src="/static/js/controllers/todos_list_controller.js"></script>
-    <script src="/static/js/controllers/todo_controller.js"></script>
-    <script src="/static/js/views/todo_input_component.js"></script>
-    <script src="/static/js/helpers/pluralize.js"></script>
-  </body>
+<script type="text/x-handlebars" data-template-name="todos">
+    <div class="content">
+        <div class="card">
+            <form class="input-group">
+                {{ todo-input id="new-todo" type="text" value=newTitle action="createTodo" placeholder="What needs to be done?"}}
+            </form>
+
+            {{ outlet }}
+        </div>
+
+        {{#if length}}
+            <p id="todo-count"><strong>{{ remaining.length }}</strong> {{ pluralize 'item' remaining.length}} left</p>
+
+            <nav class="bar bar-tab">
+                {{#link-to "todos.index" activeClass="active" class="tab-item"}}All{{/link-to}}
+
+                {{#link-to "todos.completed" activeClass="selected" class="tab-item"}}Completed{{/link-to}}
+
+                {{#if completed.length}}
+                    <button id="clear-completed" class="tab-item" {{ action "clearCompleted"}}>Clear completed</button>
+                {{/if}}
+            </nav>
+        {{/if}}
+    </div>
+</script>
+
+<script src="/static/js/vendor/jquery/dist/jquery.js"></script>
+<script src="/static/js/vendor/handlebars/dist/handlebars.js"></script>
+<script src="/static/js/vendor/components-ember/ember.js"></script>
+<script src="/static/js/vendor/ember-data/ember-data.js"></script>
+<script src="/static/js/application.js"></script>
+<script src="/static/js/router.js"></script>
+<script src="/static/js/models/todo.js"></script>
+<script src="/static/js/controllers/todos_controller.js"></script>
+<script src="/static/js/controllers/todos_list_controller.js"></script>
+<script src="/static/js/controllers/todo_controller.js"></script>
+<script src="/static/js/views/todo_input_component.js"></script>
+<script src="/static/js/helpers/pluralize.js"></script>
+</body>
 </html>

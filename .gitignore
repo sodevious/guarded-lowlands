@@ -4,3 +4,9 @@ staticfiles
 .env
 db.sqlite3
 settings.py
+.idea/
+.sass-cache
+.idea
+.DS_Store
+.sass-cache
+todos.db

@@ -1,0 +1,10 @@
+body {
+  background-color: #5a5a56;
+  font-family: "proxima-nova", "Proxima Nova", Helvetica, sans-serif; }
+
+.content {
+  top: 44px;
+  padding-bottom: 60px; }
+
+#todo-count {
+  text-align: center; }
